@@ -13,10 +13,53 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-button (click)="scanBle()">Scan</ion-button>
+  <ion-list>
+    <ion-item>
+      <ion-button (click)="startBle()">
+        Scan
+      </ion-button>
+      <ion-button (click)="bleService.connectToBluetoothDevice(device)">
+        Connexion
+      </ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ device.name }}</ion-card-title>
+          <!-- <ion-card-subtitle>{{ manufacture() }}</ion-card-subtitle> -->
+        </ion-card-header>
+        <ion-card-content>
+         <ion-label>deviceId : {{ device.deviceId }}</ion-label>
+         <ion-label>uuids : {{ device.uuids }}</ion-label>
+         <!-- <ion-label *ngFor="let service of services(); let i = index">service {{ i }} : {{ service }}    dataOffset : {{ serviceData(i) }}</ion-label> -->
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+      <select [(ngModel)]="selectedCharacteristicNumber" label-placement="floating" fill="solid">
+          <option *ngFor="let characteristic of characteristics; let index = index" [ngValue]="index">{{ characteristic }}</option>
+      </select>
+    <ion-item>
+      <ion-button (click)="bleService.sendBluetoothReadCommand(characteristicsValues[selectedCharacteristicNumber])">
+        Read
+      </ion-button>
+      <ion-button (click)="bleService.sendBluetoothWriteCommand(characteristicsValues[selectedCharacteristicNumber], [12, 14, 0, 1, 0])">
+        Write
+      </ion-button>
+    </ion-item>
+    <ion-item>
+      <ion-button (click)="writeWithoutResponse()">
+        Write without
+      </ion-button>
+      <ion-button (click)="notify()">
+        Notify
+      </ion-button>
+      <ion-button (click)="indicate()">
+        Indicate
+      </ion-button>
+    </ion-item>
+    <ion-item>
+      <textarea name="" id="" wrap='off'>{{ log }}</textarea>
+    </ion-item>
+  </ion-list>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
 </ion-content>
